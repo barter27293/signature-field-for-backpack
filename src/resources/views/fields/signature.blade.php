@@ -41,10 +41,10 @@
     </div>
     </div>
 </div>
+<input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}" value="{{ $value }}">
 <div class="">
-    <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}" value="{{ $value }}">
-    <button class="btn btn-success btn-sm" data-handle="confirm" type="button"><i class="la la-check"></i> Done</button>
-    <button class="btn btn-light btn-sm" data-handle="remove" type="button"><i class="la la-trash"></i> Clear</button>
+    <button class="btn btn-outline-success btn-sm" data-handle="confirm" type="button"><i class="las la-signature"></i>&nbsp;Save Signature</button>
+    <button class="btn btn-light btn-sm" data-handle="remove" type="button"><i class="la la-trash"></i>&nbsp;Clear</button>
 </div>
 
 {{-- HINT --}}
@@ -71,7 +71,7 @@
                 width: 100%;
                 max-width: 466px;
                 height: auto;
-                margin: 0px auto 5px;
+                margin: 0px auto 5px 0px;
             }
 
             .signature-pad-wrapper {
