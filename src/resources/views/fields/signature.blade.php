@@ -29,14 +29,16 @@
 </div>
 <!-- Wrap the image or canvas element with a block element (container) -->
 <div class="row">
-    <div class="col-sm-6" data-handle="previewArea" style="margin-bottom: 20px;">
+    <div class="col-sm-6 signature-image" data-handle="previewArea" style="margin-bottom: 20px;">
         <img data-handle="mainImage" src="">
     </div>
 </div>
 
 <div class="row">
+    <div class="signature-pad-ratio-holder">
     <div class="signature-pad-wrapper" data-handle="signaturePad">
-        <canvas id="signature-pad" class="signature-pad" width="450" height="200"></canvas>
+        <canvas id="signature-pad" class="signature-pad" x-width="450" x-height="200"></canvas>
+    </div>
     </div>
 </div>
 <div class="">
@@ -63,27 +65,41 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <style type="text/css">
+
+            .signature-pad-ratio-holder{
+                position: relative;
+                width: 100%;
+                max-width: 466px;
+                height: auto;
+                margin: 0px auto 5px;
+            }
+
             .signature-pad-wrapper {
                 position: relative;
-                width: 450px;
-                height: 200px;
+                width: 100%;
+                height: 0px;
+                padding-bottom: 44% !important;
                 -moz-user-select: none;
                 -webkit-user-select: none;
                 -ms-user-select: none;
                 user-select: none;
+                margin: 0px;
                 border: 1px dashed rgba(0,40,100,.12);
-                margin-bottom: 5px; 
-                margin-left: 15px;
+                box-sizing: border-box;
             }
+
             .signature-pad {
                 position: absolute;
                 left: 0;
                 top: 0;
-                width:450px;
-                height:200px;
+                bottom: 0px;
+                right: 0px;
+                width:100%;
+                height:100%;
             }
+
             [data-bs-theme=dark] .signature-pad-wrapper{
-                border: 1px dashed rgba(255,255,255,.5);
+                border-color: rgba(255,255,255,.5);
             }
 
             [data-bs-theme=dark]  .signature-pad,[data-bs-theme=dark] .signature-image{
@@ -94,19 +110,31 @@
     @endpush
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
         <script>
+            var signaturePad;
+            var signPadCanvas;
+
+            function resizeCanvas() {
+                const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+                signPadCanvas.width = signPadCanvas.offsetWidth * ratio;
+                signPadCanvas.height = signPadCanvas.offsetHeight * ratio;
+                signPadCanvas.getContext("2d").scale(ratio, ratio);
+                signaturePad.clear(); // otherwise isEmpty() might return incorrect value
+            }
+
             function bpFieldInitSignatureElement(element) {
                 // element will be a jQuery wrapped DOM node
                 // Find DOM elements under this form-group element
                 var $signPadElement = element.find('[data-handle=signaturePad]');
+                signPadCanvas = document.getElementById('signature-pad');
                 var $mainImage = element.find('[data-handle=mainImage]');
                 var $hiddenImage = element.find("[data-handle=hiddenImage]");
                 var $remove = element.find("[data-handle=remove]");
                 var $confirm = element.find("[data-handle=confirm]");
                 var $previews = element.find("[data-handle=previewArea]");
 
-                var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+                signaturePad = new SignaturePad(signPadCanvas, {
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     penColor: 'rgb(0, 0, 0)'
                 });
@@ -143,7 +171,10 @@
                     $remove.hide();
                     $previews.hide();
                     $signPadElement.show();
+                    resizeCanvas();
                 });
+
+                resizeCanvas();
 
             }
         </script>
