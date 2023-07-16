@@ -82,6 +82,13 @@
                 width:450px;
                 height:200px;
             }
+            [data-bs-theme=dark] .signature-pad-wrapper{
+                border: 1px dashed rgba(255,255,255,.5);
+            }
+
+            [data-bs-theme=dark]  .signature-pad,[data-bs-theme=dark] .signature-image{
+                background: #FFF;
+            }
         </style>
 
     @endpush
