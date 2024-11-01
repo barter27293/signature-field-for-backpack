@@ -19,7 +19,7 @@
         "Signature"
     ],
     "require": {
-        "backpack/crud": "^4.1.0|^6.0"
+        "backpack/crud": "^6.2"
     },
     "autoload": {
         "psr-4": {
